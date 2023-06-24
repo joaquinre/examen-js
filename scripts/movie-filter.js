@@ -1,3 +1,4 @@
+// users schema
 const USERS = [
   {
     "id": 1,
@@ -220,7 +221,7 @@ const USERS = [
     }
   }
 ]
-
+// movies schema
 const MOVIES = [
   {
     "userId": 10,
@@ -359,7 +360,7 @@ const MOVIES = [
   }
 ]
 
-
+// get user data from inputs
 const fromDate = document.getElementById('date-From')
 const toDate = document.getElementById('date-To')
 const userId = document.getElementById('user-id')
@@ -372,6 +373,7 @@ function filterMovies(USERS, MOVIES, userId, fromDate, toDate, rate) {
   const _fromDate = fromDate.value
   const _toDate = toDate.value
 
+  // filter values given by the user and return as object
   return MOVIES.filter((movie) => {
     const filterById = _userId ? movie.userId === _userId : true
     const filterByRate = movie.rate >= _rate
@@ -379,17 +381,16 @@ function filterMovies(USERS, MOVIES, userId, fromDate, toDate, rate) {
       (!_fromDate || new Date(movie.watched) >= new Date(_fromDate)) &&
       (!_toDate || new Date(movie.watched) <= new Date(_toDate))
     )
-
     return filterByDate && filterById && filterByRate
   }).map((movie) => {
-    const user = USERS.find((user) => user.id === movie.userId)
+    const User = USERS.find((user) => user.id === movie.userId)
 
     return {
-      userId: user.id,
-      username: user.name,
-      email: user.email,
-      fullAddress: `${user.address.street} - ${user.address.city}`,
-      company: user.company,
+      userId: User.id,
+      username: User.name,
+      email: User.email,
+      fullAddress: `${User.address.street} - ${User.address.city}`,
+      company: User.company,
       movie: movie.title,
       rate: movie.rate,
       date: movie.watched,
@@ -398,13 +399,13 @@ function filterMovies(USERS, MOVIES, userId, fromDate, toDate, rate) {
   })
 }
 
-
+// handle button for display values on the front page
 const submitButton = document.getElementById('submitButton')
 
 submitButton.addEventListener('click', () => {
-  const filteredResults = filterMovies(USERS, MOVIES, userId, fromDate, toDate, rate)
-  console.log(filteredResults);
-  const html = filteredResults.map(function (result) {
+  const getFilteredResults = filterMovies(USERS, MOVIES, userId, fromDate, toDate, rate)
+  // iterate through all cards
+  const _html = getFilteredResults.map(function (result) {
     return `
         <div class="card">
           <img src="${result.image}" alt="">
@@ -417,10 +418,10 @@ submitButton.addEventListener('click', () => {
         </div>
       `;
   }).join('')
-
+  // define the place where _html go
   const cardContainer = document.querySelector('.card-container');
   if (cardContainer) {
-    cardContainer.innerHTML = html;
+    cardContainer.innerHTML = _html;
   }
 })
 
