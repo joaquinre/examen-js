@@ -360,7 +360,7 @@ const MOVIES = [
   }
 ]
 
-// get user data from inputs
+// get user data from inputss
 const fromDate = document.getElementById('date-From')
 const toDate = document.getElementById('date-To')
 const userId = document.getElementById('user-id')
